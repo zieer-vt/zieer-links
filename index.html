@@ -2,4 +2,622 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZIEER — links</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', sans-serif;
+      background: #0a1520;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 18px 36px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ── video overlay tint ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 20, 40, 0.35) 0%,
+        rgba(10, 20, 40, 0.20) 40%,
+        rgba(10, 20, 40, 0.45) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* ── video background ── */
+    #bg-video {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    /* ── name header ── */
+    .header {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #e8f0f8;
+      letter-spacing: 5px;
+      text-shadow: 0 0 20px rgba(168,204,236,0.7), 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .header-sub {
+      font-size: 0.68rem;
+      color: #a8ccec;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 2px;
+      font-style: italic;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+    }
+
+    /* ── bento grid ── */
+    .grid {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 12px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* ── base card ── */
+    .card {
+      border-radius: 22px;
+      overflow: hidden;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
+      box-shadow: 0 4px 18px rgba(60,90,130,0.15), 0 1px 3px rgba(60,90,130,0.1);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .card:hover {
+      transform: translateY(-5px) scale(1.03);
+      box-shadow: 0 14px 36px rgba(60,90,130,0.25), 0 2px 8px rgba(60,90,130,0.15);
+    }
+    .card:active { transform: scale(0.97); }
+
+    /* grid placements */
+    .card-tiktok   { grid-column: 1 / 3; grid-row: 1; min-height: 150px; }
+    .card-ig       { grid-column: 3 / 4; grid-row: 1; min-height: 150px; }
+    .card-discord  { grid-column: 1 / 2; grid-row: 2; min-height: 140px; }
+    .card-fb       { grid-column: 2 / 4; grid-row: 2; min-height: 140px; }
+    .card-yt       { grid-column: 1 / 4; grid-row: 3; min-height: 120px; }
+
+    /* ── card inner content ── */
+    .card-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .card-body {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 14px 16px;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0,0,0,0.32) 0%, transparent 60%);
+    }
+    .card-label-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card-icon svg { width: 16px; height: 16px; fill: white; }
+    .card-info {}
+    .card-platform {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1;
+    }
+    .card-handle {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.3px;
+      line-height: 1.2;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    /* arrow badge */
+    .card-arrow {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.28);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: white;
+      transition: background 0.2s;
+    }
+    .card:hover .card-arrow { background: rgba(255,255,255,0.45); }
+
+    /* ── TikTok card ── */
+    .card-tiktok .card-bg {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 70%, #1a1a4e 100%);
+    }
+    .card-tiktok .card-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle 60px at 75% 35%, rgba(255,0,80,0.25) 0%, transparent 70%),
+        radial-gradient(circle 80px at 80% 40%, rgba(0,242,234,0.2) 0%, transparent 70%);
+    }
+    .tiktok-deco {
+      position: absolute;
+      z-index: 1;
+      top: 12px;
+      left: 16px;
+      font-size: 2.2rem;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+    .tiktok-note {
+      position: absolute;
+      z-index: 1;
+      font-size: 1.1rem;
+      opacity: 0.35;
+      animation: float-note 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .note1 { top: 18px; right: 55px; animation-delay: 0s; }
+    .note2 { top: 30px; right: 35px; animation-delay: 1.5s; font-size: 0.8rem; }
+    @keyframes float-note {
+      0%,100%{ transform: translateY(0) rotate(-10deg); opacity:0.35; }
+      50%{ transform: translateY(-6px) rotate(5deg); opacity:0.55; }
+    }
+    .tiktok-icon-bg { background: linear-gradient(135deg, #010101, #2a2a2a); }
+
+    /* ── Instagram card ── */
+    .card-ig .card-bg {
+      background: linear-gradient(160deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    }
+    .card-ig .card-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle 70px at 60% 30%, rgba(255,255,255,0.15) 0%, transparent 70%);
+    }
+    .ig-icon-bg { background: linear-gradient(135deg, #833ab4, #fd1d1d); }
+
+    /* ── Discord card ── */
+    .card-discord .card-bg {
+      background: linear-gradient(160deg, #3c4a9a 0%, #5865f2 50%, #7289da 100%);
+    }
+    .card-discord .card-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle 60px at 40% 30%, rgba(255,255,255,0.12) 0%, transparent 70%);
+    }
+    .discord-icon-bg { background: rgba(88,101,242,0.7); }
+
+    /* ── Facebook card ── */
+    .card-fb .card-bg {
+      background: linear-gradient(135deg, #1877f2 0%, #0d5bbf 40%, #1a3a6e 100%);
+    }
+    .card-fb .card-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 100px 80px at 80% 20%, rgba(255,255,255,0.14) 0%, transparent 70%);
+    }
+    .fb-deco {
+      position: absolute;
+      z-index: 1;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 3.5rem;
+      opacity: 0.1;
+      pointer-events: none;
+      color: white;
+    }
+    .fb-icon-bg { background: rgba(24,119,242,0.7); }
+
+    /* ── YouTube card ── */
+    .card-yt .card-bg {
+      background: linear-gradient(135deg, #1a0a0a 0%, #3a0a0a 40%, #c4302b 100%);
+    }
+    .card-yt .card-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 120px 80px at 80% 50%, rgba(255,80,60,0.25) 0%, transparent 70%),
+        radial-gradient(circle 60px at 20% 50%, rgba(255,255,255,0.07) 0%, transparent 70%);
+    }
+    .yt-play {
+      position: absolute;
+      z-index: 1;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .yt-play svg { width: 20px; height: 20px; fill: white; margin-left: 3px; }
+    .yt-icon-bg { background: rgba(196,48,43,0.8); }
+
+    /* ── footer ── */
+    .footer {
+      position: relative;
+      z-index: 3;
+      margin-top: 16px;
+      font-size: 0.65rem;
+      color: #a8ccec;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* ── floating particles on bg ── */
+    .particles { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      animation: drift linear infinite;
+    }
+    @keyframes drift {
+      0%   { transform: translate(0,0) scale(0); opacity: 0; }
+      10%  { opacity: 0.8; transform: translate(0, -5px) scale(1); }
+      100% { transform: translate(var(--tx), -60vh) scale(0.3); opacity: 0; }
+    }
+
+    /* ── music toggle button ── */
+    #music-btn {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      background: rgba(20, 40, 70, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+    #music-btn:hover { transform: scale(1.12); background: rgba(30,60,100,0.7); }
+    #music-btn svg   { width: 18px; height: 18px; fill: rgba(255,255,255,0.9); transition: opacity 0.3s; }
+    #music-btn.playing { border-color: rgba(168,204,236,0.6); }
+    #music-btn.playing svg { animation: pulse-icon 1.8s ease-in-out infinite; }
+    @keyframes pulse-icon { 0%,100%{opacity:0.7} 50%{opacity:1} }
+
+    /* sound wave bars when playing */
+    .bars {
+      display: none;
+      align-items: flex-end;
+      gap: 2px;
+      height: 16px;
+    }
+    .bars span {
+      width: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.85);
+      animation: bar-bounce 0.8s ease-in-out infinite;
+    }
+    .bars span:nth-child(1){ height: 6px;  animation-delay: 0s; }
+    .bars span:nth-child(2){ height: 12px; animation-delay: 0.15s; }
+    .bars span:nth-child(3){ height: 8px;  animation-delay: 0.3s; }
+    .bars span:nth-child(4){ height: 14px; animation-delay: 0.1s; }
+    @keyframes bar-bounce {
+      0%,100%{ transform: scaleY(0.4); } 50%{ transform: scaleY(1); }
+    }
+    #music-btn.playing .note-icon { display: none; }
+    #music-btn.playing .bars      { display: flex; }
+
+    /* responsive */
+    @media (max-width: 380px) {
+      .grid { gap: 9px; }
+      .card-tiktok { min-height: 130px; }
+      .card-ig     { min-height: 130px; }
+      .card-discord{ min-height: 120px; }
+      .card-fb     { min-height: 120px; }
+      .card-handle { font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- background video -->
+<video id="bg-video" autoplay muted loop playsinline>
+  <source src="bg-video-small.mp4" type="video/mp4">
+</video>
+
+<div class="particles" id="particles"></div>
+
+<div class="header">
+  <div class="header-name">ZIEER</div>
+  <div class="header-sub">✦ find me here ✦</div>
+</div>
+
+<div class="grid">
+
+  <!-- TikTok — wide card -->
+  <a class="card card-tiktok" href="https://tiktok.com/@zi.eer" target="_blank" rel="noopener">
+    <div class="card-bg"></div>
+    <span class="tiktok-deco">♪</span>
+    <span class="tiktok-note note1">♫</span>
+    <span class="tiktok-note note2">♪</span>
+    <div class="card-arrow">↗</div>
+    <div class="card-body">
+      <div class="card-label-wrap">
+        <div class="card-icon tiktok-icon-bg">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.79a4.85 4.85 0 0 1-1.08-.1z"/></svg>
+        </div>
+        <div class="card-info">
+          <div class="card-platform">TikTok</div>
+          <div class="card-handle">@zi.eer</div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- Instagram — tall card -->
+  <a class="card card-ig" href="https://instagram.com/_zieer_" target="_blank" rel="noopener">
+    <div class="card-bg"></div>
+    <div class="card-arrow">↗</div>
+    <div class="card-body">
+      <div class="card-label-wrap">
+        <div class="card-icon ig-icon-bg">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        </div>
+        <div class="card-info">
+          <div class="card-platform">Instagram</div>
+          <div class="card-handle">@_zieer_</div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- Discord — small card -->
+  <a class="card card-discord" href="https://discord.gg/dkYpVUPw" target="_blank" rel="noopener">
+    <div class="card-bg"></div>
+    <div class="card-arrow">↗</div>
+    <div class="card-body">
+      <div class="card-label-wrap">
+        <div class="card-icon discord-icon-bg">
+          <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </div>
+        <div class="card-info">
+          <div class="card-platform">Discord</div>
+          <div class="card-handle">Server</div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- Facebook — wide card -->
+  <a class="card card-fb" href="https://facebook.com/zierune" target="_blank" rel="noopener">
+    <div class="card-bg"></div>
+    <span class="fb-deco">f</span>
+    <div class="card-arrow">↗</div>
+    <div class="card-body">
+      <div class="card-label-wrap">
+        <div class="card-icon fb-icon-bg">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </div>
+        <div class="card-info">
+          <div class="card-platform">Facebook</div>
+          <div class="card-handle">zierune</div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- YouTube — full-width card -->
+  <a class="card card-yt" href="https://youtube.com/@zieer_chrono" target="_blank" rel="noopener">
+    <div class="card-bg"></div>
+    <div class="yt-play">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="card-arrow">↗</div>
+    <div class="card-body">
+      <div class="card-label-wrap">
+        <div class="card-icon yt-icon-bg">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <div class="card-info">
+          <div class="card-platform">YouTube</div>
+          <div class="card-handle">@zieer_chrono</div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<p class="footer">✦ zieer · chrono archive ✦</p>
+
+<!-- music toggle -->
+<button id="music-btn" title="Toggle music" aria-label="Toggle ambient music">
+  <svg class="note-icon" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+  <div class="bars">
+    <span></span><span></span><span></span><span></span>
+  </div>
+</button>
+
+<script>
+// ── ambient music engine ──────────────────────────────
+const btn = document.getElementById('music-btn');
+let ctx = null, master = null, playing = false, loopTimer = null;
+
+// A minor dreamy chords — [root, third, fifth, octave]
+const CHORDS = [
+  [110.00, 130.81, 164.81, 220.00],   // Am  A2 C3 E3 A3
+  [87.307, 110.00, 130.81, 174.61],   // F   F2 A2 C3 F3
+  [130.81, 164.81, 196.00, 261.63],   // C   C3 E3 G3 C4
+  [98.000, 123.47, 146.83, 196.00],   // G   G2 B2 D3 G3
+];
+const BELLS = [523.25,659.25,783.99,880.00,1046.5,1318.5]; // C5 E5 G5 A5 C6 E6
+
+function makeReverb(c) {
+  const len = c.sampleRate * 2.5;
+  const buf = c.createBuffer(2, len, c.sampleRate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = buf.getChannelData(ch);
+    for (let i = 0; i < len; i++)
+      d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 1.8);
+  }
+  const cv = c.createConvolver(); cv.buffer = buf; return cv;
+}
+
+function playPad(freq, t, dur, vol, reverb) {
+  const osc  = ctx.createOscillator();
+  const env  = ctx.createGain();
+  const filt = ctx.createBiquadFilter();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  filt.type = 'lowpass'; filt.frequency.value = 800; filt.Q.value = 0.5;
+  env.gain.setValueAtTime(0, t);
+  env.gain.linearRampToValueAtTime(vol, t + dur * 0.25);
+  env.gain.setValueAtTime(vol, t + dur * 0.7);
+  env.gain.linearRampToValueAtTime(0, t + dur);
+  osc.connect(filt); filt.connect(env); env.connect(reverb); env.connect(master);
+  osc.start(t); osc.stop(t + dur + 0.1);
+}
+
+function playBell(freq, t, reverb) {
+  const osc = ctx.createOscillator();
+  const env = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  env.gain.setValueAtTime(0.06, t);
+  env.gain.exponentialRampToValueAtTime(0.0001, t + 3.5);
+  osc.connect(env); env.connect(reverb); env.connect(master);
+  osc.start(t); osc.stop(t + 4);
+}
+
+function scheduleLoop() {
+  const reverb = makeReverb(ctx);
+  reverb.connect(master);
+  const now = ctx.currentTime + 0.1;
+  const step = 7; // seconds per chord
+
+  CHORDS.forEach((chord, ci) => {
+    const t = now + ci * step;
+    chord.forEach(f => playPad(f, t, step + 1.5, 0.045, reverb));
+  });
+
+  // scatter bell sparkles across the cycle
+  const total = CHORDS.length * step;
+  for (let i = 0; i < 6; i++) {
+    const bt = now + Math.random() * total;
+    const bf = BELLS[Math.floor(Math.random() * BELLS.length)];
+    playBell(bf, bt, reverb);
+  }
+
+  loopTimer = setTimeout(scheduleLoop, (total - 1) * 1000);
+}
+
+function startMusic() {
+  ctx    = new (window.AudioContext || window.webkitAudioContext)();
+  master = ctx.createGain();
+  master.gain.value = 0.55;
+  master.connect(ctx.destination);
+  scheduleLoop();
+}
+
+function stopMusic() {
+  clearTimeout(loopTimer);
+  if (master) { master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2); }
+  setTimeout(() => { ctx && ctx.close(); ctx = null; master = null; }, 1400);
+}
+
+btn.addEventListener('click', () => {
+  playing = !playing;
+  btn.classList.toggle('playing', playing);
+  playing ? startMusic() : stopMusic();
+});
+// ─────────────────────────────────────────────────────
+
+// floating particles
+const container = document.getElementById('particles');
+function spawn() {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 4 + 2;
+  const dur  = Math.random() * 10 + 8;
+  const tx   = (Math.random() - 0.5) * 80;
+  p.style.cssText = `
+    width:${size}px; height:${size}px;
+    left:${Math.random()*100}%;
+    bottom:${Math.random()*30}%;
+    --tx:${tx}px;
+    animation-duration:${dur}s;
+    animation-delay:${Math.random()*8}s;
+    opacity:0;
+  `;
+  container.appendChild(p);
+  setTimeout(() => p.remove(), (dur + 8) * 1000);
+}
+for (let i = 0; i < 14; i++) spawn();
+setInterval(spawn, 900);
+</script>
+</body>
+</html>
