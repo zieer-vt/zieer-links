@@ -112,6 +112,7 @@
     .card-fb       { grid-column: 2 / 4; grid-row: 2; min-height: 140px; }
     .card-yt       { grid-column: 1 / 4; grid-row: 3; min-height: 120px; }
     .card-kofi     { grid-column: 1 / 4; grid-row: 4; min-height: 100px; }
+    .card-zypage   { grid-column: 1 / 4; grid-row: 5; min-height: 100px; }
 
     /* ── card inner content ── */
     .card-bg {
@@ -321,6 +322,30 @@
     }
     .kofi-icon-bg { background: rgba(255,107,53,0.75); }
 
+    /* ── ZyPage card ── */
+    .card-zypage .card-bg {
+      background: linear-gradient(135deg, #0d0a1f 0%, #2a1a5e 40%, #6c3fc9 100%);
+    }
+    .card-zypage .card-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 120px 80px at 80% 50%, rgba(140,100,255,0.3) 0%, transparent 70%),
+        radial-gradient(circle 50px at 15% 50%, rgba(255,255,255,0.06) 0%, transparent 70%);
+    }
+    .zypage-deco {
+      position: absolute;
+      z-index: 1;
+      right: 70px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.6rem;
+      opacity: 0.13;
+      pointer-events: none;
+    }
+    .zypage-icon-bg { background: rgba(108,63,201,0.8); }
+
     /* ── footer ── */
     .footer {
       position: relative;
@@ -404,6 +429,7 @@
       .card-discord{ min-height: 120px; }
       .card-fb     { min-height: 120px; }
       .card-kofi   { min-height: 88px; }
+      .card-zypage { min-height: 88px; }
       .card-handle { font-size: 0.82rem; }
     }
   </style>
@@ -511,6 +537,24 @@
         <div class="card-info">
           <div class="card-platform">YouTube</div>
           <div class="card-handle">@zieer_chrono</div>
+        </div>
+      </div>
+    </div>
+  </a>
+
+  <!-- ZyPage — shop card -->
+  <a class="card card-zypage" href="https://zypage.com/zieer" target="_blank" rel="noopener">
+    <div class="card-bg"></div>
+    <span class="zypage-deco">🛍️</span>
+    <div class="card-arrow">↗</div>
+    <div class="card-body">
+      <div class="card-label-wrap">
+        <div class="card-icon zypage-icon-bg">
+          <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3.8 6h16.4M16 10a4 4 0 0 1-8 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </div>
+        <div class="card-info">
+          <div class="card-platform">ZyPage</div>
+          <div class="card-handle">Chrono Archive Shop</div>
         </div>
       </div>
     </div>
